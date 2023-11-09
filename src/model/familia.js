@@ -5,8 +5,10 @@ conn()
 const familiaSchema = mongoose.Schema({
     nome: String,
     idade: Number,
-    profissaso: String
+    profissao: String
 
+}, {
+    timestamps: true
 })
 
 const familiaModel = mongoose.model('familias', familiaSchema)

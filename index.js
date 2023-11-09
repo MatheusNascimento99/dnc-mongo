@@ -1,6 +1,7 @@
 const express = require('express')
 const app = express()
 const familiaModel = require('./src/model/familia')
+const mongoose = require('mongoose')
 
 app.use(express.json())
 
@@ -60,6 +61,38 @@ app.get('/familias/:id', async(req, res) => {
             message: 'Não foi possível localizar esse ID'
         })
     }
+})
+
+app.put('/familias/:id', async (req, res) => {
+    if (!mongoose.isValidObjectId(req.params.id)){
+        return res.status(400).json({
+            data: {},
+            message: 'O ID não corresponde a um objeto válido!'
+        })
+    }
+
+    const membro= await familiaModel.updateOne({_id: req.params.id}, req.body)  /* método para atualizar a informação do BD, bucado pelo Id, através da requisição
+    req, e passado a alteração pela requisição do body */
+    return res.status(200).json({
+        data: membro
+    })
+})
+
+
+
+app.delete('/familias/:id', async(req, res) => {
+    if (!mongoose.isValidObjectId(req.params.id)){
+        return res.status(400).json({
+            data: {},
+            message: 'O ID não corresponde a um objeto válido!'
+        })
+    }
+
+    const membro= await familiaModel.deleteOne({_id: req.params.id}) 
+    return res.status(200).json({
+        data: membro,
+        message:`Membro deletado }`
+    })
 })
 
 
